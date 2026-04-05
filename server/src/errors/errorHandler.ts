@@ -7,7 +7,10 @@ export default function (
   res: Response,
   next: NextFunction,
 ) {
-  res.status(err.status).json({
-    message: err.message,
+  console.log(err);
+  const status = err.status || 500;
+  const message = status == 500 ? "Internal Server Error" : err.message;
+  res.status(status).json({
+    message,
   });
 }

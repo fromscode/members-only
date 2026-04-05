@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 import queries from "../db/queries.js";
 import bcrypt from "bcrypt";
+import generateToken from "../auth/generateToken.js";
 
 async function login(req: Request, res: Response) {
   const usernameOrEmail = req.body.username as string;
@@ -9,20 +10,25 @@ async function login(req: Request, res: Response) {
   const user = await queries.getUserByUsernameOrEmail(usernameOrEmail);
   if (!user || !(await bcrypt.compare(password, user.password))) {
     res.status(401).json({
-      message: "Invalid username or password",
+      message: "Invalid credentials",
     });
 
     return;
   }
 
+  const token = generateToken(user);
+
   res.status(200).json({
     message: "User logged in successfully",
-    token: "some token", // TODO generate token
+    token: token,
   });
 }
 
 async function register(req: Request, res: Response) {
-  const [firstname, lastname, username, email, password] = req.body;
+  console.log("inside register");
+  const { firstname, lastname, username, email, password } = req.body;
+
+  console.log(req.body);
 
   if (await queries.getUserByEmail(email)) {
     res.status(400).json({
@@ -40,9 +46,11 @@ async function register(req: Request, res: Response) {
 
   const hashedPass = await bcrypt.hash(password, 10);
   await queries.createUser(firstname, lastname, username, email, hashedPass);
+  const userId = await queries.getUserId(username);
+  const token = generateToken({ id: userId, role: "USER" });
   res.status(200).json({
     message: "User registered succesfully",
-    token: "some token", // TODO generate token
+    token: token,
   });
 }
 

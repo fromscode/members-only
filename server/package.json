@@ -2,13 +2,15 @@
   "name": "server",
   "scripts": {
     "dev": "tsx --env-file=.env --watch src/app.ts",
-    "init:db": "tsx --env-file=.env src/db/init.ts"
+    "init:db": "tsx --env-file=.env src/db/init.ts",
+    "generateKeys": "tsx --env-file=.env src/auth/generateKeys.ts"
   },
   "type": "module",
   "dependencies": {
     "bcrypt": "^6.0.0",
     "express": "^5.2.1",
     "express-validator": "^7.3.2",
+    "jsonwebtoken": "^9.0.3",
     "mysql2": "^3.20.0",
     "tsc": "^2.0.4",
     "typescript": "^6.0.2"
@@ -16,6 +18,7 @@
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
     "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^25.5.2",
     "tsx": "^4.21.0"
   }

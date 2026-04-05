@@ -49,9 +49,19 @@ export async function createUser(
   );
 }
 
+async function getUserId(username: string) {
+  return (
+    await pool.execute<RowDataPacket[]>(
+      "SELECT * FROM users WHERE username = ?",
+      [username],
+    )
+  )[0][0];
+}
+
 export default {
   getUserByUsernameOrEmail,
   getUserByUsername,
   getUserByEmail,
   createUser,
+  getUserId,
 };
