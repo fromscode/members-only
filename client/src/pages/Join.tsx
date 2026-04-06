@@ -1,7 +1,9 @@
 import { Button } from "@/components/ui/button"
 import NavBar from "../components/NavBar"
+import { useState } from "react"
 
 export function Join() {
+  const [isLoginShown, setIsLoginShown] = useState(fsalse)
   return (
     <>
       <NavBar></NavBar>
