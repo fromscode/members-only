@@ -3,7 +3,7 @@ import NavBar from "../components/NavBar"
 import { useState } from "react"
 
 export function Join() {
-  const [isLoginShown, setIsLoginShown] = useState(fsalse)
+  const [isLoginShown, setIsLoginShown] = useState(false)
   return (
     <>
       <NavBar></NavBar>

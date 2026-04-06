@@ -9,6 +9,7 @@ import { createBrowserRouter } from "react-router"
 import { RouterProvider } from "react-router/dom"
 import Join from "./pages/Join.tsx"
 import ErrorBoundary from "./pages/ErrorBoundary.tsx"
+import NotFound from "./pages/NotFound.tsx"
 
 const router = createBrowserRouter([
   {
@@ -22,8 +23,8 @@ const router = createBrowserRouter([
     ErrorBoundary: ErrorBoundary,
   },
   {
-    path: "/*",
-    ErrorBoundary,
+    path: "*",
+    Component: NotFound,
   },
 ])
 
