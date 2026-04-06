@@ -25,10 +25,8 @@ async function login(req: Request, res: Response) {
 }
 
 async function register(req: Request, res: Response) {
-  console.log("inside register");
   const { firstname, lastname, username, email, password } = req.body;
 
-  console.log(req.body);
 
   if (await queries.getUserByEmail(email)) {
     res.status(400).json({
