@@ -24,7 +24,7 @@ export function Join() {
         <NavBar></NavBar>
         <div className="flex flex-col items-center justify-center px-5">
           <section className="w-full max-w-lg">
-            <h1 className="mt-10 mb-14 text-center text-5xl">Login </h1>
+            <h1 className="mt-10 mb-10 text-center text-5xl">Login </h1>
             <form>
               <FieldGroup>
                 <Field>
@@ -35,7 +35,7 @@ export function Join() {
                     id="username"
                     placeholder="Glass Cat"
                     required
-                    className="py-5 text-base"
+                    className="py-5 text-base!"
                   />
                 </Field>
                 <Field className="mt-2">
@@ -46,7 +46,7 @@ export function Join() {
                     id="password"
                     type="password"
                     placeholder="••••••••"
-                    className="py-5 text-base"
+                    className="py-5 text-base!"
                     required
                   />
                 </Field>
@@ -79,29 +79,96 @@ export function Join() {
     return (
       <>
         <NavBar></NavBar>
-        <div className="flex flex-col items-center justify-center">
-          <section className="">
-            <h1 className="mt-20 mb-14 text-center text-5xl">Register </h1>
-            <p>The super private messaging board for members only.</p>
-            <p>Post in complete privacy, only members can see your messages.</p>
-            <p>
-              Enjoy the power of anonymity and show the world your true inner
-              self.
-            </p>
-            <p className="mt-5">Join in on the conversation right now!</p>
-          </section>
-          <section className="mt-10 mb-20 flex items-end gap-10">
-            <Button className="w-32 cursor-pointer rounded-2xl p-5 py-7 text-lg">
-              Join
-            </Button>
-            <span
-              onClick={() => {
-                setShowLogin(!showLogin)
-              }}
-              className="h-fit cursor-pointer underline underline-offset-2 hover:no-underline"
-            >
-              Already have an account? Login
-            </span>
+        <div className="flex max-w-full flex-col items-center justify-center px-5">
+          <section className="w-full max-w-lg">
+            <h1 className="mt-10 mb-10 text-center text-5xl">Register </h1>
+            <form>
+              <FieldGroup>
+                <Field orientation="horizontal">
+                  <FieldLabel
+                    htmlFor="firstName"
+                    className="min-w-36 flex-1 text-lg"
+                  >
+                    First Name
+                  </FieldLabel>
+                  <Input
+                    id="firstName"
+                    placeholder="Big"
+                    required
+                    className="flex-10 py-5 text-base!"
+                  />
+                </Field>
+                <Field orientation="horizontal">
+                  <FieldLabel
+                    htmlFor="lastName"
+                    className="min-w-36 flex-1 text-lg"
+                  >
+                    Last Name
+                  </FieldLabel>
+                  <Input
+                    id="lastName"
+                    placeholder="Smoke"
+                    required
+                    className="flex-10 py-5 text-base!"
+                  />
+                </Field>
+                <Field orientation="horizontal">
+                  <FieldLabel
+                    htmlFor="username"
+                    className="min-w-36 flex-1 text-lg"
+                  >
+                    Username
+                  </FieldLabel>
+                  <Input
+                    id="username"
+                    placeholder="2number9s"
+                    required
+                    className="flex-10 py-5 text-base!"
+                  />
+                </Field>
+                <Field className="mt-2">
+                  <FieldLabel htmlFor="password" className="text-lg">
+                    Password
+                  </FieldLabel>
+                  <Input
+                    type="password"
+                    placeholder="••••••••"
+                    className="py-5 text-base!"
+                    required
+                  />
+                </Field>
+                <Field className="mt-2">
+                  <FieldLabel htmlFor="confirmPassword" className="text-lg">
+                    Confirm Password
+                  </FieldLabel>
+                  <Input
+                    type="confirmPassword"
+                    placeholder="••••••••"
+                    className="py-5 text-base!"
+                    required
+                  />
+                </Field>
+                <Field
+                  orientation="horizontal"
+                  className="mt-5 mb-20 flex flex-col items-center"
+                >
+                  <Button
+                    type="submit"
+                    className="w-32 cursor-pointer rounded-2xl p-5 py-7 text-lg"
+                  >
+                    Join
+                  </Button>
+                  <span
+                    onClick={() => {
+                      setShowLogin(!showLogin)
+                    }}
+                    className="mt-2 h-fit cursor-pointer text-sm underline underline-offset-2 opacity-70 hover:no-underline"
+                  >
+                    Already have an account? Login
+                  </span>
+                </Field>
+              </FieldGroup>
+            </form>
           </section>
         </div>
       </>
