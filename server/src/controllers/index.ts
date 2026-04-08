@@ -1,4 +1,4 @@
-import type { Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import queries from "../db/queries.js";
 import bcrypt from "bcrypt";
 import generateToken from "../auth/generateToken.js";
@@ -52,9 +52,23 @@ async function register(req: Request, res: Response) {
   });
 }
 
+async function posts(req: Request, res: Response, next:NextFunction) {
+  res.json({
+    posts: [
+      {
+        id: 1,
+        author: 'Dutch',
+        title: 'This is Tahiti',
+        text: 'Random text'
+      }
+    ]
+  })
+}
+
 const controller = {
   login,
   register,
+  posts
 };
 
 export default controller;

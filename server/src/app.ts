@@ -2,7 +2,16 @@ import express, { type Request, type Response } from "express";
 import router from "./routes/index.js";
 import errorHandler from "./errors/errorHandler.js";
 import notFound from "./middlewares/notFound.js";
+
+
+import passport from "passport";
+
+import './config/passport.js';
+
+
 const app = express();
+
+app.use(passport.initialize());
 
 const PORT = process.env.port;
 

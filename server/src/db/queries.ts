@@ -1,6 +1,5 @@
 import type { RowDataPacket } from "mysql2";
 import pool from "./pool.js";
-import { PassThrough } from "node:stream";
 
 export async function getUserByUsernameOrEmail(usernameOrEmail: string) {
   let [rows] = await pool.execute<RowDataPacket[]>(
@@ -49,11 +48,11 @@ export async function createUser(
   );
 }
 
-async function getUserId(username: string) {
+async function getUserId(userId: number) {
   return (
     await pool.execute<RowDataPacket[]>(
-      "SELECT * FROM users WHERE username = ?",
-      [username],
+      "SELECT * FROM users WHERE id = ?",
+      [userId],
     )
   )[0][0];
 }
