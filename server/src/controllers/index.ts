@@ -52,23 +52,35 @@ async function register(req: Request, res: Response) {
   });
 }
 
-async function posts(req: Request, res: Response, next:NextFunction) {
+async function getMessages(req: Request, res: Response) {
+  const messages = await queries.getAllMessages();
   res.json({
-    posts: [
-      {
-        id: 1,
-        author: 'Dutch',
-        title: 'This is Tahiti',
-        text: 'Random text'
-      }
-    ]
+    messages
   })
+}
+
+async function postMessage(req: Request, res: Response, next: NextFunction) {
+  const author = (req as any).user.username;
+  let {title, body, timeStamp} = req.body;
+
+  if (!timeStamp) timeStamp = Date.now();
+  try {
+    await queries.addMessage(author, title, body, timeStamp);
+
+    res.json({
+      message: "Message added sucessfully"
+    })
+  }
+  catch (err) {
+    next(err);
+  } 
 }
 
 const controller = {
   login,
   register,
-  posts
+  getMessages,
+  postMessage
 };
 
 export default controller;

@@ -57,10 +57,22 @@ async function getUserId(userId: number) {
   )[0][0];
 }
 
+async function getAllMessages() {
+  return (await pool.execute<RowDataPacket []>(
+    "SELECT * FROM messages;"
+  ))[0]
+}
+
+async function addMessage(author: string, title: string, body: string, timeStamp: string) {
+  await pool.query('INSERT INTO messages(author, title, body, timeStamp) values (?, ?, ?, ?);', [author, title, body, timeStamp]);
+}
+
 export default {
   getUserByUsernameOrEmail,
   getUserByUsername,
   getUserByEmail,
   createUser,
   getUserId,
+  getAllMessages,
+  addMessage
 };

@@ -7,8 +7,12 @@ router.post("/login", controller.login);
 
 router.post("/register", controller.register);
 
-router.get('/posts', passport.authenticate('jwt', {
+router.get('/messages', passport.authenticate('jwt', {
     session: false,
-}), controller.posts)
+}), controller.getMessages);
+
+router.post('/message', passport.authenticate('jwt', {
+    session: false,
+}), controller.postMessage)
 
 export default router;
