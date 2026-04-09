@@ -22,7 +22,7 @@ export function Join() {
     return (
       <>
         <NavBar></NavBar>
-        <div className="flex flex-col items-center justify-center px-5">
+        <div className="flex flex-col items-center justify-center px-5 overflow-x-hidden">
           <section className="w-full max-w-lg">
             <h1 className="mt-10 mb-10 text-center text-5xl">Login </h1>
             <form>
@@ -79,8 +79,8 @@ export function Join() {
     return (
       <>
         <NavBar></NavBar>
-        <div className="flex max-w-full flex-col items-center justify-center px-5">
-          <section className="w-full max-w-lg">
+        <div className="flex flex-col items-center justify-center px-5">
+          <section className="w-xl shrink">
             <h1 className="mt-10 mb-10 text-center text-5xl">Register </h1>
             <form>
               <FieldGroup>
@@ -95,7 +95,7 @@ export function Join() {
                     id="firstName"
                     placeholder="Big"
                     required
-                    className="flex-10 py-5 text-base!"
+                    className=" py-5 text-base! min-w-0"
                   />
                 </Field>
                 <Field orientation="horizontal">
@@ -109,7 +109,7 @@ export function Join() {
                     id="lastName"
                     placeholder="Smoke"
                     required
-                    className="flex-10 py-5 text-base!"
+                    className="py-5 text-base! min-w-0"
                   />
                 </Field>
                 <Field orientation="horizontal">
@@ -123,7 +123,7 @@ export function Join() {
                     id="username"
                     placeholder="2number9s"
                     required
-                    className="flex-10 py-5 text-base!"
+                    className="py-5 text-base! min-w-0"
                   />
                 </Field>
                 <Field className="mt-2">
@@ -133,7 +133,7 @@ export function Join() {
                   <Input
                     type="password"
                     placeholder="••••••••"
-                    className="py-5 text-base!"
+                    className="py-5 text-base! min-w-0"
                     required
                   />
                 </Field>
@@ -144,7 +144,7 @@ export function Join() {
                   <Input
                     type="confirmPassword"
                     placeholder="••••••••"
-                    className="py-5 text-base!"
+                    className="py-5 text-base! min-w-0"
                     required
                   />
                 </Field>
