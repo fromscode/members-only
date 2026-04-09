@@ -63,7 +63,7 @@ async function postMessage(req: Request, res: Response, next: NextFunction) {
   const author = (req as any).user.username;
   let {title, body, timeStamp} = req.body;
 
-  if (!timeStamp) timeStamp = Date.now();
+  if (!timeStamp) timeStamp = new Date();
   try {
     await queries.addMessage(author, title, body, timeStamp);
 
