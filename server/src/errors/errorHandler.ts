@@ -10,6 +10,13 @@ export default function (
   const status = err.status || 500;
   const message = status == 500 ? "Internal Server Error" : err.message;
   if (status == 500) console.error(err);
+  if (status == 400 && err.errorsArray?.length) {
+    res.status(status).json({
+      message,
+      errors: err.errorsArray
+    });
+    return;
+  }
   res.status(status).json({
     message,
   });

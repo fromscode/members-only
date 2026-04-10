@@ -2,10 +2,23 @@ import type { NextFunction, Request, Response } from "express";
 import queries from "../db/queries.js";
 import bcrypt from "bcrypt";
 import generateToken from "../auth/generateToken.js";
+import { validatePassword, validateUsernameOrEmail } from "../middlewares/validators.js";
 
-async function login(req: Request, res: Response) {
-  const usernameOrEmail = req.body.username as string;
-  const password = req.body.password as string;
+import {matchedData, validationResult} from 'express-validator';
+import BadRequest400 from "../errors/BadRequest400.js";
+
+
+const login = [validateUsernameOrEmail, validatePassword, async (req: Request, res: Response, next: NextFunction) => {
+  const result = validationResult(req);
+  if (!result.isEmpty()) {
+    next(new BadRequest400(result.array()));
+    return;
+  }
+
+  const sanitizedBody = matchedData(req);
+
+  const usernameOrEmail = sanitizedBody.username as string;
+  const password = sanitizedBody.password as string;
 
   const user = await queries.getUserByUsernameOrEmail(usernameOrEmail);
   if (!user || !(await bcrypt.compare(password, user.password))) {
@@ -22,7 +35,7 @@ async function login(req: Request, res: Response) {
     message: "User logged in successfully",
     token: token,
   });
-}
+}]
 
 async function register(req: Request, res: Response) {
   const { firstname, lastname, username, email, password } = req.body;
