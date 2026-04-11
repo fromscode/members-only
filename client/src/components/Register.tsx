@@ -50,6 +50,7 @@ export default function Register({
           username,
           email,
           password,
+          confirmPassword,
         }),
         mode: "cors",
         headers: {
@@ -64,7 +65,7 @@ export default function Register({
         // } else if (response.status == 401) {
         //   setErrorMessage("Incorrect username or password")
       } else if (response.status == 200) {
-        const token = (await response.json()).token as string
+        const token = resBody.token
         localStorage.setItem("token", token)
         navigate("/messages")
       } else if (response.status == 500) {

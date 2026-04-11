@@ -2,21 +2,17 @@ import type { NextFunction, Request, Response } from "express";
 import queries from "../db/queries.js";
 import bcrypt from "bcrypt";
 import generateToken from "../auth/generateToken.js";
-import {
-  validatePassword,
-  validateUsernameOrEmail,
-} from "../middlewares/validators.js";
+import validators from "../middlewares/validators.js";
 
 import { matchedData, validationResult } from "express-validator";
 import BadRequest400 from "../errors/BadRequest400.js";
 
 const login = [
-  validateUsernameOrEmail,
-  validatePassword,
+  validators.validateUsernameOrEmail,
+  validators.validatePassword,
   async (req: Request, res: Response, next: NextFunction) => {
     const result = validationResult(req);
     if (!result.isEmpty()) {
-      console.log(result.array());
       next(new BadRequest400(result.array()));
       return;
     }
@@ -44,32 +40,48 @@ const login = [
   },
 ];
 
-async function register(req: Request, res: Response) {
-  const { firstname, lastname, username, email, password } = req.body;
+const register = [
+  validators.validateFirstname,
+  validators.validateLastname,
+  validators.validateUsername,
+  validators.validateEmail,
+  validators.validatePassword,
+  validators.validateConfirmPassword,
+  async (req: Request, res: Response, next: NextFunction) => {
+    const result = validationResult(req);
+    if (!result.isEmpty()) {
+      next(new BadRequest400(result.array()));
+      return;
+    }
 
-  if (await queries.getUserByEmail(email)) {
-    res.status(400).json({
-      message: "Email already in use. Please login with this email instead",
+    const sanitizedBody = matchedData(req);
+
+    const { firstname, lastname, username, email, password } = sanitizedBody;
+
+    if (await queries.getUserByEmail(email)) {
+      res.status(400).json({
+        message: "Email already in use. Please login with this email instead",
+      });
+      return;
+    }
+
+    if (await queries.getUserByUsername(username)) {
+      res.status(400).json({
+        message: "Username already taken, try using a different username", // TODO : generate suggestions
+      });
+      return;
+    }
+
+    const hashedPass = await bcrypt.hash(password, 10);
+    await queries.createUser(firstname, lastname, username, email, hashedPass);
+    const userId = await queries.getUserId(username);
+    const token = generateToken({ id: userId, role: "USER" });
+    res.status(200).json({
+      message: "User registered succesfully",
+      token: token,
     });
-    return;
-  }
-
-  if (await queries.getUserByUsername(username)) {
-    res.status(400).json({
-      message: "Username already taken, try using a different username", // TODO : generate suggestions
-    });
-    return;
-  }
-
-  const hashedPass = await bcrypt.hash(password, 10);
-  await queries.createUser(firstname, lastname, username, email, hashedPass);
-  const userId = await queries.getUserId(username);
-  const token = generateToken({ id: userId, role: "USER" });
-  res.status(200).json({
-    message: "User registered succesfully",
-    token: token,
-  });
-}
+  },
+];
 
 async function getMessages(req: Request, res: Response) {
   const messages = await queries.getAllMessages();
