@@ -2,12 +2,14 @@ import { NavLink } from "react-router"
 
 import { Button } from "./ui/button"
 
+import { Plus } from "lucide-react"
+
 import {
   NavigationMenu,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu"
 
-export default function NavBar() {
+export default function NavBaruser() {
   return (
     <header className="flex w-full items-center justify-between px-5 py-2">
       <NavLink
@@ -22,7 +24,10 @@ export default function NavBar() {
       </NavigationMenu>
 
       <NavLink to="/join">
-        <Button className="cursor-pointer rounded-2xl px-4 py-4">Join</Button>
+        <Button className="flex cursor-pointer rounded-2xl px-3 py-4 pr-4">
+          <Plus className="" />
+          New Post
+        </Button>
       </NavLink>
     </header>
   )
