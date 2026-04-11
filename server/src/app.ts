@@ -3,13 +3,14 @@ import router from "./routes/index.js";
 import errorHandler from "./errors/errorHandler.js";
 import notFound from "./middlewares/notFound.js";
 
+import cors from "cors";
 
 import passport from "passport";
 
-import './config/passport.js';
-
+import "./config/passport.js";
 
 const app = express();
+app.use(cors());
 
 app.use(passport.initialize());
 

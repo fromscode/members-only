@@ -2,44 +2,50 @@ import type { NextFunction, Request, Response } from "express";
 import queries from "../db/queries.js";
 import bcrypt from "bcrypt";
 import generateToken from "../auth/generateToken.js";
-import { validatePassword, validateUsernameOrEmail } from "../middlewares/validators.js";
+import {
+  validatePassword,
+  validateUsernameOrEmail,
+} from "../middlewares/validators.js";
 
-import {matchedData, validationResult} from 'express-validator';
+import { matchedData, validationResult } from "express-validator";
 import BadRequest400 from "../errors/BadRequest400.js";
 
+const login = [
+  validateUsernameOrEmail,
+  validatePassword,
+  async (req: Request, res: Response, next: NextFunction) => {
+    const result = validationResult(req);
+    if (!result.isEmpty()) {
+      console.log(result.array());
+      next(new BadRequest400(result.array()));
+      return;
+    }
 
-const login = [validateUsernameOrEmail, validatePassword, async (req: Request, res: Response, next: NextFunction) => {
-  const result = validationResult(req);
-  if (!result.isEmpty()) {
-    next(new BadRequest400(result.array()));
-    return;
-  }
+    const sanitizedBody = matchedData(req);
 
-  const sanitizedBody = matchedData(req);
+    const usernameOrEmail = sanitizedBody.username as string;
+    const password = sanitizedBody.password as string;
 
-  const usernameOrEmail = sanitizedBody.username as string;
-  const password = sanitizedBody.password as string;
+    const user = await queries.getUserByUsernameOrEmail(usernameOrEmail);
+    if (!user || !(await bcrypt.compare(password, user.password))) {
+      res.status(401).json({
+        message: "Invalid credentials",
+      });
 
-  const user = await queries.getUserByUsernameOrEmail(usernameOrEmail);
-  if (!user || !(await bcrypt.compare(password, user.password))) {
-    res.status(401).json({
-      message: "Invalid credentials",
+      return;
+    }
+
+    const token = generateToken(user);
+
+    res.status(200).json({
+      message: "User logged in successfully",
+      token: token,
     });
-
-    return;
-  }
-
-  const token = generateToken(user);
-
-  res.status(200).json({
-    message: "User logged in successfully",
-    token: token,
-  });
-}]
+  },
+];
 
 async function register(req: Request, res: Response) {
   const { firstname, lastname, username, email, password } = req.body;
-
 
   if (await queries.getUserByEmail(email)) {
     res.status(400).json({
@@ -68,32 +74,31 @@ async function register(req: Request, res: Response) {
 async function getMessages(req: Request, res: Response) {
   const messages = await queries.getAllMessages();
   res.json({
-    messages
-  })
+    messages,
+  });
 }
 
 async function postMessage(req: Request, res: Response, next: NextFunction) {
   const author = (req as any).user.username;
-  let {title, body, timeStamp} = req.body;
+  let { title, body, timeStamp } = req.body;
 
   if (!timeStamp) timeStamp = new Date();
   try {
     await queries.addMessage(author, title, body, timeStamp);
 
     res.json({
-      message: "Message added sucessfully"
-    })
-  }
-  catch (err) {
+      message: "Message added sucessfully",
+    });
+  } catch (err) {
     next(err);
-  } 
+  }
 }
 
 const controller = {
   login,
   register,
   getMessages,
-  postMessage
+  postMessage,
 };
 
 export default controller;

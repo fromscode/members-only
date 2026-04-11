@@ -6,7 +6,7 @@ import NavBar from "../components/NavBar"
 
 export function Join() {
   const [showLogin, setShowLogin] = useState(true)
-  const [username, setUsername] = useState<string | undefined>(undefined)
+  const [username, setUsername] = useState<string>("")
 
   function toggleDisplay() {
     setShowLogin(!showLogin)

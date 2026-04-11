@@ -18,8 +18,8 @@ import { Input } from "@/components/ui/input"
 
 type RegisterProps = {
   toggleDisplay: () => void
-  username: string | undefined
-  setUsername: (username: string | undefined) => void
+  username: string
+  setUsername: (username: string) => void
 }
 
 export default function Register({
@@ -27,12 +27,10 @@ export default function Register({
   username,
   setUsername,
 }: RegisterProps) {
-  const [password, setPassword] = useState<string | undefined>(undefined)
-  const [firstname, setFirstname] = useState<string | undefined>(undefined)
-  const [lastname, setLastname] = useState<string | undefined>(undefined)
-  const [confirmPassword, setConfirmPassword] = useState<string | undefined>(
-    undefined
-  )
+  const [password, setPassword] = useState<string>("")
+  const [firstname, setFirstname] = useState<string>("")
+  const [lastname, setLastname] = useState<string>("")
+  const [confirmPassword, setConfirmPassword] = useState<string>("")
 
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)

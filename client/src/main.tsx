@@ -10,6 +10,7 @@ import { RouterProvider } from "react-router/dom"
 import Join from "./pages/Join.tsx"
 import ErrorBoundary from "./pages/ErrorBoundary.tsx"
 import NotFound from "./pages/NotFound.tsx"
+import Messages from "./pages/Messages.tsx"
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,11 @@ const router = createBrowserRouter([
   {
     path: "/join",
     Component: Join,
+    ErrorBoundary: ErrorBoundary,
+  },
+  {
+    path: "/messages",
+    Component: Messages,
     ErrorBoundary: ErrorBoundary,
   },
   {
