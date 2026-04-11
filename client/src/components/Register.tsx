@@ -3,18 +3,10 @@ import { useState } from "react"
 
 import { Eye, EyeOff } from "lucide-react"
 
-import {
-  Field,
-  FieldDescription,
-  FieldGroup,
-  FieldLabel,
-  FieldLegend,
-  FieldSeparator,
-  FieldSet,
-  FieldError,
-} from "@/components/ui/field"
+import { Field, FieldGroup, FieldLabel } from "@/components/ui/field"
 
 import { Input } from "@/components/ui/input"
+import { useNavigate } from "react-router"
 
 type RegisterProps = {
   toggleDisplay: () => void
@@ -30,17 +22,73 @@ export default function Register({
   const [password, setPassword] = useState<string>("")
   const [firstname, setFirstname] = useState<string>("")
   const [lastname, setLastname] = useState<string>("")
+  const [email, setEmail] = useState<string>("")
   const [confirmPassword, setConfirmPassword] = useState<string>("")
 
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+
+  const [errorMessage, setErrorMessage] = useState<string>("")
+
+  const navigate = useNavigate()
+
+  async function handleSubmit(e: React.SubmitEvent) {
+    e.preventDefault()
+
+    if (password !== confirmPassword) {
+      setErrorMessage("Password and Confirm Password does not match")
+      return
+    }
+
+    const backend = import.meta.env.VITE_backend_uri as string
+    try {
+      const response = await fetch(backend + "register", {
+        method: "POST",
+        body: JSON.stringify({
+          firstname,
+          lastname,
+          username,
+          email,
+          password,
+        }),
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+
+      const resBody = await response.json()
+
+      if (response.status == 400) {
+        setErrorMessage(resBody.message)
+        // } else if (response.status == 401) {
+        //   setErrorMessage("Incorrect username or password")
+      } else if (response.status == 200) {
+        const token = (await response.json()).token as string
+        localStorage.setItem("token", token)
+        navigate("/messages")
+      } else if (response.status == 500) {
+        setErrorMessage("Internal Server Error")
+      } else {
+        setErrorMessage(response.status + " error")
+      }
+    } catch (err) {
+      setErrorMessage("Some error occurred, Refer to console")
+      console.error(err)
+    }
+  }
 
   return (
     <>
       <div className="flex flex-col items-center justify-center px-5">
         <section className="w-xl shrink">
           <h1 className="mt-10 mb-10 text-center text-5xl">Register </h1>
-          <form>
+          {errorMessage && (
+            <div className="mb-5 rounded-bl-xs bg-red-950 py-2 text-center">
+              {errorMessage}
+            </div>
+          )}
+          <form onSubmit={handleSubmit}>
             <FieldGroup>
               <Field orientation="horizontal">
                 <FieldLabel
@@ -86,7 +134,22 @@ export default function Register({
                   placeholder="2number9s"
                   required
                   value={username}
+                  minLength={3}
                   onChange={(e) => setUsername(e.target.value)}
+                  className="min-w-0 py-5 text-base!"
+                />
+              </Field>
+              <Field orientation="horizontal">
+                <FieldLabel htmlFor="email" className="min-w-36 flex-1 text-lg">
+                  Email
+                </FieldLabel>
+                <Input
+                  type="email"
+                  id="email"
+                  placeholder="smokey.smoke.99@gtamail.com"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   className="min-w-0 py-5 text-base!"
                 />
               </Field>
@@ -99,6 +162,7 @@ export default function Register({
                     type={showPassword ? "text" : "password"}
                     placeholder="••••••••"
                     value={password}
+                    minLength={6}
                     onChange={(e) => setPassword(e.target.value)}
                     className="min-w-0 py-5 pr-10 text-base!"
                     required
