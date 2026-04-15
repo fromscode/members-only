@@ -10,7 +10,7 @@ import { RouterProvider } from "react-router/dom"
 import Join from "./pages/Join.tsx"
 import ErrorBoundary from "./pages/ErrorBoundary.tsx"
 import NotFound from "./pages/NotFound.tsx"
-import Messages from "./pages/Messages.tsx"
+import Dashboard from "./pages/Dashboard.tsx"
 
 const router = createBrowserRouter([
   {
@@ -24,8 +24,8 @@ const router = createBrowserRouter([
     ErrorBoundary: ErrorBoundary,
   },
   {
-    path: "/messages",
-    Component: Messages,
+    path: "/dashboard",
+    Component: Dashboard,
     ErrorBoundary: ErrorBoundary,
   },
   {

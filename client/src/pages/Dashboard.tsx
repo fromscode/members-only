@@ -3,7 +3,7 @@ import { useNavigate } from "react-router"
 
 import NavBarUser from "../components/NavBarUser"
 
-export default function Messages() {
+export default function Dashboard() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [messages, setMessages] = useState<any[]>()
   const [loading, setLoading] = useState(true)

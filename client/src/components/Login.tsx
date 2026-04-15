@@ -47,7 +47,7 @@ export default function Login({
       } else if (response.status == 200) {
         const token = (await response.json()).token as string
         localStorage.setItem("token", token)
-        navigate("/messages")
+        navigate("/dashboard")
       } else if (response.status == 500) {
         setErrorMessage("Internal Server Error")
       } else {
