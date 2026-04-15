@@ -27,6 +27,7 @@ export default function Dashboard() {
           navigate("/join")
         } else if (response.status == 200) {
           const resBody = await response.json()
+          console.log(resBody.messages);
           setMessages(resBody.messages)
           setLoading(false)
         } else {
@@ -48,7 +49,7 @@ export default function Dashboard() {
       ) : (
         <>
           {messages?.map((message) => (
-            <div>{message.text}</div>
+            <div key={message.id}>{message.title}</div>
           ))}
         </>
       )}
