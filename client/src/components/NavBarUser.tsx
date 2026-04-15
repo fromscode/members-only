@@ -11,17 +11,17 @@ import {
 
 export default function NavBaruser() {
   return (
-    <header className="flex w-full items-center justify-between px-5 py-2 gap-4">
+    <header className="flex w-full items-center justify-between px-5 gap-3 mt-3.5">
       <NavLink
         to="/"
-        className="cursor-pointer text-xl py-4 px-6 bg-muted rounded-2xl hover:opacity-80"
+        className="cursor-pointer text-sm py-1 underline underline-offset-4 rounded-lg hover:no-underline"
       >
         OnlyChat
       </NavLink>
 
       <NavLink
         to="/dashboard"
-        className="cursor-pointer text-xl underline underline-offset-4 hover:no-underline"
+        className="cursor-pointer text-sm hover:bg-input py-1 rounded-lg px-1"
       >
         Dashboard
       </NavLink>
@@ -30,7 +30,7 @@ export default function NavBaruser() {
         <NavigationMenuList className="flex space-x-4"></NavigationMenuList>
       </NavigationMenu>
 
-      <NavLink to="/join">
+      <NavLink to="/post">
         <Button className="flex cursor-pointer rounded-2xl px-3 py-4 pr-4">
           <Plus className="" />
           New Post

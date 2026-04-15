@@ -11,6 +11,7 @@ import Join from "./pages/Join.tsx"
 import ErrorBoundary from "./pages/ErrorBoundary.tsx"
 import NotFound from "./pages/NotFound.tsx"
 import Dashboard from "./pages/Dashboard.tsx"
+import NewMessage from './pages/NewMessage.tsx'
 
 const router = createBrowserRouter([
   {
@@ -26,6 +27,11 @@ const router = createBrowserRouter([
   {
     path: "/dashboard",
     Component: Dashboard,
+    ErrorBoundary: ErrorBoundary,
+  },
+  {
+    path: "/post",
+    Component: NewMessage,
     ErrorBoundary: ErrorBoundary,
   },
   {
