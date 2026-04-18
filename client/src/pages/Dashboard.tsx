@@ -2,7 +2,12 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router"
 
 import NavBarUser from "../components/NavBarUser"
-import { Card, CardHeader, CardDescription, CardTitle, CardAction, CardContent, CardFooter } from "@/components/ui/Card"
+import {
+  Card,
+  CardHeader,
+  CardDescription,
+  CardTitle,
+} from "@/components/ui/Card"
 import { Button } from "@/components/ui/button"
 
 import { Trash2 } from "lucide-react"
@@ -31,7 +36,7 @@ export default function Dashboard() {
           navigate("/join")
         } else if (response.status == 200) {
           const resBody = await response.json()
-          console.log(resBody.messages);
+          console.log(resBody.messages)
           setMessages(resBody.messages)
           setLoading(false)
         } else {
@@ -52,24 +57,36 @@ export default function Dashboard() {
         <div>Loading</div>
       ) : (
         <>
-          <div className="flex gap-4 m-5">
+          <div className="m-5 flex gap-4">
             {messages?.map((message) => (
-              <Card size="sm" className="mx-auto w-full max-w-sm bg-input p-4 gap-0!">
+              <Card
+                key={message.id}
+                size="sm"
+                className="mx-auto w-full max-w-sm gap-0! bg-input p-4"
+              >
                 <CardHeader className="p-0!">
-                  <CardTitle className="text-xs! flex gap-3 items-center"><div className="h-5 w-5 rounded-full bg-primary"></div>{message.author}</CardTitle>
+                  <CardTitle className="flex items-center gap-3 text-xs!">
+                    <div className="h-5 w-5 rounded-full bg-primary"></div>
+                    {message.author}
+                  </CardTitle>
                 </CardHeader>
                 <hr className="my-2" />
                 <CardHeader className="p-0!">
                   <CardTitle className="text-lg">{message.title}</CardTitle>
                 </CardHeader>
                 <CardDescription className="mb-4">
-                  {message.body}
+                  {message.body.split("\n").map((str: string, i: number) => (
+                    <div key={i}>
+                      {str}
+                      <br />
+                    </div>
+                  ))}
                 </CardDescription>
-                <div className="flex mt-auto bg-none">
-                  <Button  className=" cursor-pointer bg-red-950 mt-auto ">
+                <div className="mt-auto flex bg-none">
+                  <Button className="mt-auto cursor-pointer bg-red-950">
                     Action
                   </Button>
-                  <Button className="bg-red-950 cursor-pointer text-accent-foreground">
+                  <Button className="cursor-pointer bg-red-950 text-accent-foreground">
                     <Trash2 />
                   </Button>
                 </div>

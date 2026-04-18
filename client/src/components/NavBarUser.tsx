@@ -11,17 +11,17 @@ import {
 
 export default function NavBaruser() {
   return (
-    <header className="flex w-full items-center justify-between px-5 gap-3 mt-3.5">
+    <header className="mt-3.5 flex w-full items-center justify-between gap-3 px-5">
       <NavLink
         to="/"
-        className="cursor-pointer text-sm py-1 underline underline-offset-4 rounded-lg hover:no-underline"
+        className="cursor-pointer rounded-lg py-1 text-sm underline underline-offset-4 hover:no-underline"
       >
         OnlyChat
       </NavLink>
 
       <NavLink
         to="/dashboard"
-        className="cursor-pointer text-sm hover:bg-input py-1 rounded-lg px-1"
+        className="cursor-pointer rounded-lg px-1 py-1 text-sm hover:bg-input"
       >
         Dashboard
       </NavLink>
