@@ -52,7 +52,7 @@ export default function Dashboard() {
 
   return (
     <>
-      <NavBarUser />
+      <NavBarUser role="USER" /> {/* // TODO - Fetch from backend */}
       {loading ? (
         <div>Loading</div>
       ) : (
