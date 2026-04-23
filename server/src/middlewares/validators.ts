@@ -1,4 +1,4 @@
-import { body } from "express-validator";
+import { body, param } from "express-validator";
 
 const validateUsernameOrEmail = body("username")
   .escape()
@@ -50,6 +50,16 @@ const validateConfirmPassword = body("confirmPassword")
   })
   .withMessage("Password and Confirm Password does not match");
 
+const validatePostId = param("postId")
+  .escape()
+  .notEmpty()
+  .isInt({
+    min: 1,
+    max: 2 ** 31 - 1,
+  })
+  .withMessage("Invalid Post Id")
+  .toInt();
+
 export default {
   validateUsernameOrEmail,
   validatePassword,
@@ -58,4 +68,5 @@ export default {
   validateUsername,
   validateEmail,
   validateConfirmPassword,
+  validatePostId,
 };

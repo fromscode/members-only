@@ -119,16 +119,27 @@ async function getRole(req: Request, res: Response) {
   });
 }
 
-async function deletePost(req: Request, res: Response) {
-  const postId = +req.params.postId!;
-  const author = (req as any).user.username;
-  if (
-    ((await queries.deletePostVerify(postId, author))[0] as any).affectedRows ==
-    0
-  ) {
-    res.sendStatus(403);
-  } else res.sendStatus(200);
-}
+const deletePost = [
+  validators.validatePostId,
+  async (req: Request, res: Response, next: NextFunction) => {
+    const result = validationResult(req);
+    if (!result.isEmpty()) {
+      next(new BadRequest400(result.array()));
+      return;
+    }
+
+    const sanitizedBody = matchedData(req);
+
+    const { postId } = sanitizedBody;
+    const author = (req as any).user.username;
+    if (
+      ((await queries.deletePostVerify(postId, author))[0] as any)
+        .affectedRows == 0
+    ) {
+      res.sendStatus(403);
+    } else res.sendStatus(200);
+  },
+];
 
 const controller = {
   login,
