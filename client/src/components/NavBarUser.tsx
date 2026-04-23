@@ -1,8 +1,8 @@
-import { NavLink } from "react-router"
+import { NavLink, useNavigate } from "react-router"
 
 import { Button } from "./ui/button"
 
-import { Plus } from "lucide-react"
+import { Plus, LogOut } from "lucide-react"
 
 import {
   NavigationMenu,
@@ -10,6 +10,13 @@ import {
 } from "@/components/ui/navigation-menu"
 
 export default function NavBaruser({ role }: { role: string }) {
+  const navigate = useNavigate()
+
+  function handleLogout() {
+    localStorage.removeItem("token")
+    navigate(0)
+  }
+
   return (
     <header className="sticky top-0 z-10 flex w-full items-center justify-between gap-3 bg-background px-5 pt-3.5 pb-0.5">
       <NavLink
@@ -32,7 +39,7 @@ export default function NavBaruser({ role }: { role: string }) {
 
       <NavLink to="/dashboard/post">
         <Button className="flex cursor-pointer rounded-2xl px-3 py-4 pr-4">
-          <Plus className="" />
+          <Plus />
           New Post
         </Button>
       </NavLink>
@@ -57,6 +64,13 @@ export default function NavBaruser({ role }: { role: string }) {
           </div>
         )}
       </NavLink>
+
+      <Button
+        className="flex min-h-full cursor-pointer items-center justify-center rounded-full bg-muted py-4 pl-3 text-red-500 hover:caption-bottom hover:bg-card hover:text-red-700"
+        onClick={handleLogout}
+      >
+        <LogOut className="size-4" />
+      </Button>
     </header>
   )
 }
