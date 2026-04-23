@@ -12,7 +12,6 @@ import { Button } from "@/components/ui/button"
 import { Trash2 } from "lucide-react"
 
 export default function Dashboard() {
-  // const role = useOutletContext()
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [messages, setMessages] = useState<any[]>()
   const [loading, setLoading] = useState(true)
@@ -55,7 +54,26 @@ export default function Dashboard() {
     fetchMessages()
   }, [navigate])
 
-  function handleDelete() {}
+  async function handleDelete(postId: number) {
+    try {
+      const uri = import.meta.env.VITE_backend_uri + "delete/" + postId
+      const res = await fetch(uri, {
+        headers: {
+          Authorization: "bearer " + localStorage.getItem("token"),
+        },
+        mode: "cors",
+        method: "Delete",
+      })
+
+      if (res.status == 200) {
+        navigate(0)
+      } else {
+        console.log(res.body)
+      }
+    } catch (err) {
+      console.error(err)
+    }
+  }
 
   if (error) throw new Error(errMessage)
 
@@ -79,18 +97,28 @@ export default function Dashboard() {
                   </CardTitle>
                 </CardHeader>
                 <hr className="my-2" />
-                <CardHeader className="mb-2 p-0!">
-                  <CardTitle className="text-lg">{message.title}</CardTitle>
-                </CardHeader>
-                <CardDescription className="mb-4">
-                  {message.body.split("\n").map((str: string, i: number) => (
-                    <div key={i}>
-                      {str}
-                      <br />
-                    </div>
-                  ))}
-                  <hr />
-                </CardDescription>
+                {message.isDeleted ? (
+                  <CardDescription>
+                    Post is deleted by {message.deletedBy}
+                  </CardDescription>
+                ) : (
+                  <>
+                    <CardHeader className="mb-2 p-0!">
+                      <CardTitle className="text-lg">{message.title}</CardTitle>
+                    </CardHeader>
+                    <CardDescription className="mb-4">
+                      {message.body
+                        .split("\n")
+                        .map((str: string, i: number) => (
+                          <div key={i}>
+                            {str}
+                            <br />
+                          </div>
+                        ))}
+                      <hr />
+                    </CardDescription>
+                  </>
+                )}
                 <div className="mt-auto flex items-center gap-2 bg-none">
                   <div className="flex gap-2 text-muted-foreground">
                     <span>
@@ -113,10 +141,10 @@ export default function Dashboard() {
                         .join(" ")}
                     </span>
                   </div>
-                  {message.author && (
+                  {message.author && !message.isDeleted && (
                     <Button
                       className="ml-auto cursor-pointer bg-red-950 text-accent-foreground"
-                      onClick={handleDelete}
+                      onClick={() => handleDelete(message.id)}
                     >
                       <Trash2 />
                     </Button>

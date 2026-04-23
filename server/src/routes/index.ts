@@ -31,4 +31,12 @@ router.get(
   controller.getRole,
 );
 
+router.delete(
+  "/delete/:postId",
+  passport.authenticate("jwt", {
+    session: false,
+  }),
+  controller.deletePost,
+);
+
 export default router;

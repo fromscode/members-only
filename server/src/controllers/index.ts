@@ -86,11 +86,12 @@ const register = [
 async function getMessages(req: Request, res: Response) {
   const messages = await queries.getAllMessages();
   if ((req as any).user.role == "USER")
-    messages.forEach(
-      (message) =>
-        (message.author =
-          message.author == (req as any).user.username ? message.author : ""),
-    );
+    messages.forEach((message) => {
+      message.deletedBy =
+        message.deletedBy == message.author ? "author" : "admin";
+      message.author =
+        message.author == (req as any).user.username ? message.author : "";
+    });
   res.json({
     messages,
   });
@@ -118,12 +119,24 @@ async function getRole(req: Request, res: Response) {
   });
 }
 
+async function deletePost(req: Request, res: Response) {
+  const postId = +req.params.postId!;
+  const author = (req as any).user.username;
+  if (
+    ((await queries.deletePostVerify(postId, author))[0] as any).affectedRows ==
+    0
+  ) {
+    res.sendStatus(403);
+  } else res.sendStatus(200);
+}
+
 const controller = {
   login,
   register,
   getMessages,
   postMessage,
   getRole,
+  deletePost,
 };
 
 export default controller;

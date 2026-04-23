@@ -50,21 +50,38 @@ export async function createUser(
 
 async function getUserId(userId: number) {
   return (
-    await pool.execute<RowDataPacket[]>(
-      "SELECT * FROM users WHERE id = ?",
-      [userId],
-    )
+    await pool.execute<RowDataPacket[]>("SELECT * FROM users WHERE id = ?", [
+      userId,
+    ])
   )[0][0];
 }
 
 async function getAllMessages() {
-  return (await pool.execute<RowDataPacket []>(
-    "SELECT * FROM messages;"
-  ))[0]
+  return (await pool.execute<RowDataPacket[]>("SELECT * FROM messages;"))[0];
 }
 
-async function addMessage(author: string, title: string, body: string, timeStamp: string) {
-  await pool.query('INSERT INTO messages(author, title, body, timeStamp) values (?, ?, ?, ?);', [author, title, body, timeStamp]);
+async function addMessage(
+  author: string,
+  title: string,
+  body: string,
+  timeStamp: string,
+) {
+  await pool.query(
+    "INSERT INTO messages(author, title, body, timeStamp) values (?, ?, ?, ?);",
+    [author, title, body, timeStamp],
+  );
+}
+
+async function deletePostVerify(postId: number, author: string) {
+  return await pool.query(
+    `UPDATE messages SET 
+      title = '', 
+      body = '', 
+      isDeleted = 1, 
+      deletedBy = ?
+      where id = ? AND author = ?;`,
+    [author, postId, author],
+  );
 }
 
 export default {
@@ -74,5 +91,6 @@ export default {
   createUser,
   getUserId,
   getAllMessages,
-  addMessage
+  addMessage,
+  deletePostVerify,
 };
