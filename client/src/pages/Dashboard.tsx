@@ -83,7 +83,7 @@ export default function Dashboard() {
         <div>Loading</div>
       ) : (
         <>
-          <div className="m-5 flex flex-wrap gap-4 overflow-y-auto">
+          <div className="m-5 flex flex-wrap gap-4">
             {messages?.map((message) => (
               <Card
                 key={message.id}
@@ -106,7 +106,7 @@ export default function Dashboard() {
                     <CardHeader className="mb-2 p-0!">
                       <CardTitle className="text-lg">{message.title}</CardTitle>
                     </CardHeader>
-                    <CardDescription className="mb-4">
+                    <CardDescription className="mb-1">
                       {message.body
                         .split("\n")
                         .map((str: string, i: number) => (
@@ -115,40 +115,42 @@ export default function Dashboard() {
                             <br />
                           </div>
                         ))}
-                      <hr />
                     </CardDescription>
                   </>
                 )}
-                <div className="mt-auto flex items-center gap-2 bg-none">
-                  <div className="flex gap-2 text-muted-foreground">
-                    <span>
-                      {new Date(message.timestamp)
-                        .toDateString()
-                        .split(" ")
-                        .slice(1)
-                        .map((v, i) =>
-                          i == 1 ? v + "," : i == 2 ? v.slice(2) : v
-                        )
-                        .join(" ")}
-                    </span>
-                    <span>
-                      {new Date(message.timestamp)
-                        .toLocaleTimeString()
-                        .split(" ")
-                        .map((v, i) =>
-                          i ? v : v.split(":").slice(0, 2).join(":")
-                        )
-                        .join(" ")}
-                    </span>
+                <div className="mt-auto gap-2 bg-none">
+                  <hr className="mb-2" />
+                  <div className="flex items-center gap-2">
+                    <div className="flex gap-2 text-muted-foreground">
+                      <span>
+                        {new Date(message.timestamp)
+                          .toDateString()
+                          .split(" ")
+                          .slice(1)
+                          .map((v, i) =>
+                            i == 1 ? v + "," : i == 2 ? v.slice(2) : v
+                          )
+                          .join(" ")}
+                      </span>
+                      <span>
+                        {new Date(message.timestamp)
+                          .toLocaleTimeString()
+                          .split(" ")
+                          .map((v, i) =>
+                            i ? v : v.split(":").slice(0, 2).join(":")
+                          )
+                          .join(" ")}
+                      </span>
+                    </div>
+                    {message.author && !message.isDeleted && (
+                      <Button
+                        className="ml-auto cursor-pointer bg-red-950 text-accent-foreground"
+                        onClick={() => handleDelete(message.id)}
+                      >
+                        <Trash2 />
+                      </Button>
+                    )}
                   </div>
-                  {message.author && !message.isDeleted && (
-                    <Button
-                      className="ml-auto cursor-pointer bg-red-950 text-accent-foreground"
-                      onClick={() => handleDelete(message.id)}
-                    >
-                      <Trash2 />
-                    </Button>
-                  )}
                 </div>
               </Card>
             ))}
