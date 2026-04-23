@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react"
-import NavBar from "../components/NavBarUser"
 
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field"
 
@@ -51,7 +50,6 @@ export default function Message() {
 
   return (
     <>
-      <NavBar role="USER" /> {/* // TODO- fetch from backend */}
       <div className="flex flex-col items-center justify-center overflow-x-hidden px-5">
         <section className="w-full max-w-lg">
           <h1 className="mt-10 mb-10 text-center text-5xl">Post Message </h1>

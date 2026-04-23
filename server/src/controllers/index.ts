@@ -106,11 +106,18 @@ async function postMessage(req: Request, res: Response, next: NextFunction) {
   }
 }
 
+async function getRole(req: Request, res: Response, next: NextFunction) {
+  res.json({
+    role: (req.user as any).role,
+  });
+}
+
 const controller = {
   login,
   register,
   getMessages,
   postMessage,
+  getRole,
 };
 
 export default controller;

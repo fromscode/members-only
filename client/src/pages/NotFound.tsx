@@ -1,10 +1,8 @@
-import NavBar from "../components/NavBar"
 import { NavLink } from "react-router"
 
 export default function NotFound() {
   return (
     <>
-      <NavBar></NavBar>
       <div className="flex w-screen flex-col items-center justify-center gap-3">
         <h1 className="mt-20 flex gap-2 text-2xl">
           <span>404</span>

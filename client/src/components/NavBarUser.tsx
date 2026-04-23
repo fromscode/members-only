@@ -2,7 +2,7 @@ import { NavLink } from "react-router"
 
 import { Button } from "./ui/button"
 
-import { Plus, User } from "lucide-react"
+import { Plus } from "lucide-react"
 
 import {
   NavigationMenu,
@@ -30,7 +30,7 @@ export default function NavBaruser({ role }: { role: string }) {
         <NavigationMenuList className="flex space-x-4"></NavigationMenuList>
       </NavigationMenu>
 
-      <NavLink to="/post">
+      <NavLink to="/dashboard/post">
         <Button className="flex cursor-pointer rounded-2xl px-3 py-4 pr-4">
           <Plus className="" />
           New Post
@@ -48,7 +48,7 @@ export default function NavBaruser({ role }: { role: string }) {
           </div>
         ) : (
           <div className="flex items-stretch">
-            <div className="flex h-full items-center justify-stretch gap-5 rounded-l-full border-2 border-primary bg-accent px-3 text-xs">
+            <div className="flex min-h-full items-center justify-stretch gap-5 rounded-l-full border-2 border-primary bg-accent px-3 text-xs">
               {role}
             </div>
             <Button className="flex cursor-pointer gap-5 rounded-r-full border-2 border-primary bg-primary px-3 py-4 hover:text-background">

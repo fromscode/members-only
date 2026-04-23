@@ -23,4 +23,12 @@ router.post(
   controller.postMessage,
 );
 
+router.get(
+  "/role",
+  passport.authenticate("jwt", {
+    session: false,
+  }),
+  controller.getRole,
+);
+
 export default router;

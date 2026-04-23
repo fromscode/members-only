@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router"
 
-import NavBarUser from "../components/NavBarUser"
 import {
   Card,
   CardHeader,
@@ -36,7 +35,6 @@ export default function Dashboard() {
           navigate("/join")
         } else if (response.status == 200) {
           const resBody = await response.json()
-          console.log(resBody.messages)
           setMessages(resBody.messages)
           setLoading(false)
         } else {
@@ -52,7 +50,6 @@ export default function Dashboard() {
 
   return (
     <>
-      <NavBarUser role="USER" /> {/* // TODO - Fetch from backend */}
       {loading ? (
         <div>Loading</div>
       ) : (
