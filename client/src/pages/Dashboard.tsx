@@ -12,23 +12,24 @@ import { Button } from "@/components/ui/button"
 import { Trash2 } from "lucide-react"
 
 export default function Dashboard() {
+  // const role = useOutletContext()
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [messages, setMessages] = useState<any[]>()
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(false)
+  const [errMessage, setErrorMessage] = useState("")
 
   const navigate = useNavigate()
 
   useEffect(() => {
     async function fetchMessages() {
-      const response = await fetch(
-        import.meta.env.VITE_backend_uri + "messages",
-        {
-          mode: "cors",
-          headers: {
-            Authorization: "bearer " + localStorage.getItem("token"),
-          },
-        }
-      )
+      const uri = import.meta.env.VITE_backend_uri + "messages"
+      const response = await fetch(uri, {
+        mode: "cors",
+        headers: {
+          Authorization: "bearer " + localStorage.getItem("token"),
+        },
+      })
 
       try {
         if (response.status == 401) {
@@ -38,7 +39,13 @@ export default function Dashboard() {
           setMessages(resBody.messages)
           setLoading(false)
         } else {
-          console.log(response.status + "was returned")
+          console.log(response.status + " was returned")
+          setErrorMessage(
+            response.status +
+              " was returned from last call to backend on " +
+              uri
+          )
+          setError(true)
         }
       } catch (err) {
         console.error(err)
@@ -48,13 +55,17 @@ export default function Dashboard() {
     fetchMessages()
   }, [navigate])
 
+  function handleDelete() {}
+
+  if (error) throw new Error(errMessage)
+
   return (
     <>
       {loading ? (
         <div>Loading</div>
       ) : (
         <>
-          <div className="m-5 flex gap-4">
+          <div className="m-5 flex flex-wrap gap-4 overflow-y-auto">
             {messages?.map((message) => (
               <Card
                 key={message.id}
@@ -64,11 +75,11 @@ export default function Dashboard() {
                 <CardHeader className="p-0!">
                   <CardTitle className="flex items-center gap-3 text-xs!">
                     <div className="h-5 w-5 rounded-full bg-primary"></div>
-                    {message.author}
+                    {message.author || "Anonymous"}
                   </CardTitle>
                 </CardHeader>
                 <hr className="my-2" />
-                <CardHeader className="p-0!">
+                <CardHeader className="mb-2 p-0!">
                   <CardTitle className="text-lg">{message.title}</CardTitle>
                 </CardHeader>
                 <CardDescription className="mb-4">
@@ -78,14 +89,38 @@ export default function Dashboard() {
                       <br />
                     </div>
                   ))}
+                  <hr />
                 </CardDescription>
-                <div className="mt-auto flex bg-none">
-                  <Button className="mt-auto cursor-pointer bg-red-950">
-                    Action
-                  </Button>
-                  <Button className="cursor-pointer bg-red-950 text-accent-foreground">
-                    <Trash2 />
-                  </Button>
+                <div className="mt-auto flex items-center gap-2 bg-none">
+                  <div className="flex gap-2 text-muted-foreground">
+                    <span>
+                      {new Date(message.timestamp)
+                        .toDateString()
+                        .split(" ")
+                        .slice(1)
+                        .map((v, i) =>
+                          i == 1 ? v + "," : i == 2 ? v.slice(2) : v
+                        )
+                        .join(" ")}
+                    </span>
+                    <span>
+                      {new Date(message.timestamp)
+                        .toLocaleTimeString()
+                        .split(" ")
+                        .map((v, i) =>
+                          i ? v : v.split(":").slice(0, 2).join(":")
+                        )
+                        .join(" ")}
+                    </span>
+                  </div>
+                  {message.author && (
+                    <Button
+                      className="ml-auto cursor-pointer bg-red-950 text-accent-foreground"
+                      onClick={handleDelete}
+                    >
+                      <Trash2 />
+                    </Button>
+                  )}
                 </div>
               </Card>
             ))}

@@ -11,7 +11,7 @@ import {
 
 export default function NavBaruser({ role }: { role: string }) {
   return (
-    <header className="mt-3.5 flex w-full items-center justify-between gap-3 px-5">
+    <header className="sticky top-0 z-10 flex w-full items-center justify-between gap-3 bg-background px-5 pt-3.5 pb-0.5">
       <NavLink
         to="/"
         className="cursor-pointer rounded-lg py-1 text-sm underline underline-offset-4 hover:no-underline"

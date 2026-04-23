@@ -85,6 +85,12 @@ const register = [
 
 async function getMessages(req: Request, res: Response) {
   const messages = await queries.getAllMessages();
+  if ((req as any).user.role == "USER")
+    messages.forEach(
+      (message) =>
+        (message.author =
+          message.author == (req as any).user.username ? message.author : ""),
+    );
   res.json({
     messages,
   });
@@ -106,7 +112,7 @@ async function postMessage(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-async function getRole(req: Request, res: Response, next: NextFunction) {
+async function getRole(req: Request, res: Response) {
   res.json({
     role: (req.user as any).role,
   });
