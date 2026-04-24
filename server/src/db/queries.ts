@@ -48,10 +48,10 @@ export async function createUser(
   );
 }
 
-async function getUserId(userId: number) {
+async function getUserId(username: string) {
   return (
-    await pool.execute<RowDataPacket[]>("SELECT * FROM users WHERE id = ?", [
-      userId,
+    await pool.execute<RowDataPacket[]>("SELECT id FROM users WHERE username = ?", [
+      username,
     ])
   )[0][0];
 }

@@ -74,7 +74,8 @@ const register = [
 
     const hashedPass = await bcrypt.hash(password, 10);
     await queries.createUser(firstname, lastname, username, email, hashedPass);
-    const userId = await queries.getUserId(username);
+    const userId = (await queries.getUserId(username))!.id;
+    console.log(userId);
     const token = generateToken({ id: userId, role: "USER" });
     res.status(200).json({
       message: "User registered succesfully",
@@ -116,6 +117,7 @@ async function postMessage(req: Request, res: Response, next: NextFunction) {
 }
 
 async function getRole(req: Request, res: Response) {
+  console.log("role");
   res.json({
     role: (req.user as any).role,
   });

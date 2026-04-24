@@ -65,9 +65,9 @@ export default function Register({
         // } else if (response.status == 401) {
         //   setErrorMessage("Incorrect username or password")
       } else if (response.status == 200) {
-        const token = resBody.token
+        const token = resBody.token as string;
         localStorage.setItem("token", token)
-        navigate("/messages")
+        navigate('/dashboard')
       } else if (response.status == 500) {
         setErrorMessage("Internal Server Error")
       } else {
