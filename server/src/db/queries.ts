@@ -84,6 +84,11 @@ async function deletePostVerify(postId: number, author: string) {
   );
 }
 
+
+async function upgradeRole(userId: number) {
+  await pool.query("Update users SET role = ? where id = ?", ["MEMBER", userId]);
+}
+
 export default {
   getUserByUsernameOrEmail,
   getUserByUsername,
@@ -93,4 +98,5 @@ export default {
   getAllMessages,
   addMessage,
   deletePostVerify,
+  upgradeRole
 };

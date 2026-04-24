@@ -5,10 +5,9 @@ export default class BadRequest400 extends Error {
   errorsArray: String[];
   constructor(errorsArray: ValidationError[]) {
     super();
-    const messageBuilder = [];
-    this.message = "Invalid / Incomplete data";
-    this.errorsArray = [];
-    for (const error of errorsArray) this.errorsArray.push(error?.msg)
     this.status = 400;
+    this.errorsArray = [];
+    this.message = "Invalid / Incomplete data";
+    for (const error of errorsArray) this.errorsArray.push(error?.msg)
   }
 }

@@ -44,9 +44,8 @@ export default function NavBaruser({ role }: { role: string }) {
         </Button>
       </NavLink>
 
-      <NavLink to="/" className="h-full cursor-default">
+      <NavLink to="/dashboard/upgrade" className="h-full cursor-default">
         {" "}
-        {/* TO-DO link upgrade  */}
         {role == "ADMIN" ? (
           <div className="flex h-full">
             <div className="flex h-full items-center justify-stretch gap-5 rounded-l-full border-2 border-primary bg-accent px-3 text-xs">

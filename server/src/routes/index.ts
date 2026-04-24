@@ -39,4 +39,8 @@ router.delete(
   controller.deletePost,
 );
 
+router.post("/upgrade", passport.authenticate("jwt", {
+  session: false
+}), controller.upgradeRole)
+
 export default router;

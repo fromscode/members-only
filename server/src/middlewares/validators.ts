@@ -60,6 +60,8 @@ const validatePostId = param("postId")
   .withMessage("Invalid Post Id")
   .toInt();
 
+const validateSecret = body("secret").escape();
+
 export default {
   validateUsernameOrEmail,
   validatePassword,
@@ -69,4 +71,5 @@ export default {
   validateEmail,
   validateConfirmPassword,
   validatePostId,
+  validateSecret
 };

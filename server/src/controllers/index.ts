@@ -141,6 +141,36 @@ const deletePost = [
   },
 ];
 
+const upgradeRole = [
+  validators.validateSecret,
+  async (req: Request, res: Response, next: NextFunction) => {
+    const result = validationResult(req);
+    if (!result.isEmpty()) {
+      res.sendStatus(400);
+      return;
+    }
+
+    const {secret} = matchedData(req);
+    const role = (req as any).user.role;
+
+    if (role != "USER") {
+      res.sendStatus(403);
+      return;
+    }
+
+    if (secret !== process.env.upgrade_passphrase) {
+      res.sendStatus(400);
+      return;
+    }
+
+    const userId = +(req as any).user.id;
+
+    await queries.upgradeRole(userId);
+
+    res.sendStatus(200);
+  }
+]
+
 const controller = {
   login,
   register,
@@ -148,6 +178,7 @@ const controller = {
   postMessage,
   getRole,
   deletePost,
+  upgradeRole
 };
 
 export default controller;

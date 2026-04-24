@@ -13,6 +13,7 @@ import NotFound from "./pages/NotFound.tsx"
 import Dashboard from "./components/Dashboard.tsx"
 import Post from "./components/Post.tsx"
 import Holder from "./pages/Holder.tsx"
+import Upgrade from './components/Upgrade.tsx'
 
 const router = createBrowserRouter([
   {
@@ -31,6 +32,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, Component: Dashboard },
       { path: "post", Component: Post },
+      { path: "upgrade", Component: Upgrade },
     ],
     ErrorBoundary: ErrorBoundary,
   },
