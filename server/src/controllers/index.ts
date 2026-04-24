@@ -85,12 +85,14 @@ const register = [
 
 async function getMessages(req: Request, res: Response) {
   const messages = await queries.getAllMessages();
-  if ((req as any).user.role == "USER")
+  const username = (req as any).user.username
+  const role = (req as any).user.role;
+
     messages.forEach((message) => {
-      message.deletedBy =
-        message.deletedBy == message.author ? "author" : "admin";
-      message.author =
-        message.author == (req as any).user.username ? message.author : "";
+      if (role == "USER") message.author = message.author == username ? message.author : "";
+
+      message.deletedBy = message.deletedBy == message.author ? "author" : role == "USER" ? "admin" : "admin " + message.deletedBy;
+      message.canDelete = role == "ADMIN" ? true : message.author === username ? true : false
     });
   res.json({
     messages,

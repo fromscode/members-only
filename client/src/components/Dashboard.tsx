@@ -142,7 +142,7 @@ export default function Dashboard() {
                           .join(" ")}
                       </span>
                     </div>
-                    {message.author && !message.isDeleted && (
+                    {message.canDelete &&  (
                       <Button
                         className="ml-auto cursor-pointer bg-red-950 text-accent-foreground"
                         onClick={() => handleDelete(message.id)}
