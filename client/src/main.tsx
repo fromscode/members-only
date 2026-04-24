@@ -10,8 +10,8 @@ import { RouterProvider } from "react-router/dom"
 import Join from "./pages/Join.tsx"
 import ErrorBoundary from "./pages/ErrorBoundary.tsx"
 import NotFound from "./pages/NotFound.tsx"
-import Dashboard from "./pages/Dashboard.tsx"
-import Post from "./pages/Post.tsx"
+import Dashboard from "./components/Dashboard.tsx"
+import Post from "./components/Post.tsx"
 import Holder from "./pages/Holder.tsx"
 
 const router = createBrowserRouter([
