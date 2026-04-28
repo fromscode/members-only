@@ -117,7 +117,6 @@ async function postMessage(req: Request, res: Response, next: NextFunction) {
 }
 
 async function getRole(req: Request, res: Response) {
-  console.log("role");
   res.json({
     role: (req.user as any).role,
   });

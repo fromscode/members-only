@@ -14,8 +14,10 @@ passport.use(new JWTStrategy({
     const userId = +jwtPayload.sub;
 
     try {
-        const user = await queries.getUserId(userId);
+        const user = await queries.getUserByUserId(userId);
         if (user) return done(null, user);
+
+        return done(null, false, "Invalid token");
     }
     catch (err) {
         return done(err, false);

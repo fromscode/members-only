@@ -11,16 +11,17 @@ export default function Holder() {
   const navigate = useNavigate()
   useEffect(() => {
     async function getUserRole() {
-      const uri = import.meta.env.VITE_backend_uri + "role"
-      const response = await fetch(uri, {
-        mode: "cors",
-        headers: {
-          Authorization: "bearer " + localStorage.getItem("token"),
-          "Content-type": "application/json",
-        },
-      })
 
       try {
+        const uri = import.meta.env.VITE_backend_uri + "role"
+        const response = await fetch(uri, {
+          mode: "cors",
+          headers: {
+            Authorization: "bearer " + localStorage.getItem("token"),
+            "Content-type": "application/json",
+          },
+        })
+        
         if (response.status == 401) {
           navigate("/join")
         } else if (response.status == 200) {
@@ -42,7 +43,7 @@ export default function Holder() {
     }
 
     getUserRole()
-  })
+  }, [])
 
   if (error) throw new Error(errMessage)
 

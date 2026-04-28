@@ -17,6 +17,10 @@ export async function getUserByUsernameOrEmail(usernameOrEmail: string) {
   return rows[0];
 }
 
+export async function getUserByUserId(userId: number) {
+  return (await pool.execute<RowDataPacket[]>( "SELECT * from users WHERE id = ?;", [userId]))[0][0];
+}
+
 export async function getUserByUsername(username: string) {
   let [rows] = await pool.execute<RowDataPacket[]>(
     "SELECT * from users WHERE username = ?;",
@@ -98,5 +102,6 @@ export default {
   getAllMessages,
   addMessage,
   deletePostVerify,
-  upgradeRole
+  upgradeRole,
+  getUserByUserId
 };
