@@ -135,6 +135,15 @@ const deletePost = [
 
     const { postId } = sanitizedBody;
     const author = (req as any).user.username;
+    const role = (req as any).user.role;
+
+
+    if (role === "ADMIN") {
+      await queries.deletePostByAdmin(postId, author);
+      res.sendStatus(200);
+      return;
+    }
+
     if (
       ((await queries.deletePostVerify(postId, author))[0] as any)
         .affectedRows == 0

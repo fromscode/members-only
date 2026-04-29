@@ -93,6 +93,16 @@ async function upgradeRole(userId: number) {
   await pool.query("Update users SET role = ? where id = ?", ["MEMBER", userId]);
 }
 
+
+async function deletePostByAdmin(postId: number, adminUserName: string) {
+  await pool.query(`UPDATE messages SET 
+      title = '', 
+      body = '', 
+      isDeleted = 1, 
+      deletedBy = ?
+      where id = ?;`, [adminUserName, postId]);
+}
+
 export default {
   getUserByUsernameOrEmail,
   getUserByUsername,
@@ -103,5 +113,6 @@ export default {
   addMessage,
   deletePostVerify,
   upgradeRole,
-  getUserByUserId
+  getUserByUserId,
+  deletePostByAdmin
 };
