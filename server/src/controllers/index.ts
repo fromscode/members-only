@@ -89,12 +89,12 @@ async function getMessages(req: Request, res: Response) {
   const username = (req as any).user.username
   const role = (req as any).user.role;
 
-    messages.forEach((message) => {
-      if (role == "USER") message.author = message.author == username ? message.author : "";
+  messages.forEach((message) => {
+    if (role == "USER") message.author = message.author == username ? message.author : "";
 
-      message.deletedBy = message.deletedBy == message.author ? "author" : role == "USER" ? "admin" : "admin " + message.deletedBy;
-      message.canDelete = role == "ADMIN" ? true : message.author === username ? true : false
-    });
+    message.deletedBy = message.deletedBy == message.author ? "author" : role == "USER" ? "admin" : "admin " + message.deletedBy;
+    message.canDelete = role == "ADMIN" ? true : message.author === username ? true : false
+  });
   res.json({
     messages,
   });
@@ -162,24 +162,38 @@ const upgradeRole = [
       return;
     }
 
-    const {secret} = matchedData(req);
+    const { secret } = matchedData(req);
     const role = (req as any).user.role;
 
-    if (role != "USER") {
-      res.sendStatus(403);
-      return;
+    switch (role) {
+      case "USER": {
+        if (secret !== process.env.upgrade_passphrase) {
+          res.sendStatus(400);
+          return;
+        }
+        const userId = +(req as any).user.id;
+
+        await queries.upgradeRole("MEMBER", userId);
+
+        res.sendStatus(200);
+        break;
+      }
+      case "MEMBER" : {
+        if (secret !== process.env.admin_upgrade_passphrase) {
+          res.sendStatus(400);
+          return;
+        }
+        const userId = +(req as any).user.id;
+
+        await queries.upgradeRole("ADMIN", userId);
+
+        res.sendStatus(200);
+        break;
+      }
+      default: {
+        res.sendStatus(403);
+      }
     }
-
-    if (secret !== process.env.upgrade_passphrase) {
-      res.sendStatus(400);
-      return;
-    }
-
-    const userId = +(req as any).user.id;
-
-    await queries.upgradeRole(userId);
-
-    res.sendStatus(200);
   }
 ]
 

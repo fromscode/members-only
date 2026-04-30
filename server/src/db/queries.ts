@@ -89,8 +89,8 @@ async function deletePostVerify(postId: number, author: string) {
 }
 
 
-async function upgradeRole(userId: number) {
-  await pool.query("Update users SET role = ? where id = ?", ["MEMBER", userId]);
+async function upgradeRole(role:string, userId: number) {
+  await pool.query("Update users SET role = ? where id = ?", [role, userId]);
 }
 
 

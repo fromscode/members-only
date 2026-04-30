@@ -7,6 +7,7 @@ export default function Holder() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
   const [errMessage, setErrorMessage] = useState("")
+  const [refreshKey, setRefreshKey] = useState(0);
 
   const navigate = useNavigate()
   useEffect(() => {
@@ -43,7 +44,7 @@ export default function Holder() {
     }
 
     getUserRole()
-  }, [])
+  }, [navigate, refreshKey])
 
   if (error) throw new Error(errMessage)
 
@@ -52,7 +53,7 @@ export default function Holder() {
   return (
     <>
       <NavBar role={role} />
-      <Outlet context={role} />
+      <Outlet context={{role, refreshRole: () => setRefreshKey(prev => prev + 1)}} />
     </>
   )
 }

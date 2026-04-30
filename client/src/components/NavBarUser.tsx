@@ -46,7 +46,7 @@ export default function NavBaruser({ role }: { role: string }) {
 
       <NavLink to="/dashboard/upgrade" className="h-full cursor-default">
         {" "}
-        {role !== "USER" ? (
+        {role === "ADMIN" ? (
           <div className="flex min-h-full">
             <div className="flex min-h-full items-center justify-stretch gap-5 rounded-full border-2 border-primary bg-accent px-3 text-xs">
               <div className="min-h-full py-2">{role}</div>

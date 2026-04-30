@@ -5,7 +5,7 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 
 export default function Upgrade() {
-    const role = useOutletContext<string>();
+    const {role, refreshRole} = useOutletContext<{role: string, refreshRole: () => void}>();
 
     const [secret, setSecret] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
@@ -33,9 +33,10 @@ export default function Upgrade() {
                 setErrorMessage("Invalid passphrase");
             }
             else if (response.status == 403) {
-                setErrorMessage("Your current role is not USER");
+                setErrorMessage("Current role cannot be upgraded futher");
             }
             else if (response.status == 200) {
+                refreshRole();
                 navigate('/dashboard');
             }
             else {
